@@ -1,2 +1,67 @@
-html {
-  background-color: red; }
+h1 {
+  display: flex;
+  flex-flow: row nowrap;
+  background-image: url("/assets/header_bg.svg"), url("/assets/logo.svg");
+  background-repeat: no-repeat;
+  background-size: 50% ,13%;
+  background-position: center;
+  margin: 0rem;
+  margin-bottom: 0.2rem;
+  height: 2.5rem;
+  width: 100%; }
+
+.toolbar {
+  display: flex;
+  flex-flow: row nowrap;
+  background-color: #2E2E2E;
+  color: dimgray;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  height: 2.2rem; }
+  .toolbar .tools {
+    margin: 5px; }
+
+#pictureBoard {
+  display: flex;
+  flex-flow: column wrap;
+  background-color: rgba(151, 38, 3, 0.877);
+  background-image: url("/assets/bg.jpg");
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  min-height: 1rem;
+  height: auto; }
+  #pictureBoard .pictureRow {
+    display: flex;
+    flex-flow: row nowrap; }
+    #pictureBoard .pictureRow * {
+      background-color: white;
+      margin: 4px; }
+    #pictureBoard .pictureRow .picture {
+      display: flex;
+      flex-flow: column nowrap;
+      border: thin dotted black;
+      height: 400px;
+      width: 325px;
+      align-items: center;
+      justify-content: space-evenly; }
+      #pictureBoard .pictureRow .picture * {
+        width: 277px; }
+      #pictureBoard .pictureRow .picture .img {
+        background-size: cover;
+        height: 168px; }
+      #pictureBoard .pictureRow .picture .title {
+        font-family: "Oswald", sans-serif;
+        font-weight: bold;
+        font-size: 1rem; }
+      #pictureBoard .pictureRow .picture .text {
+        font-family: "Lato", sans-serif;
+        font-size: .9rem; }
+
+#pageContainer {
+  display: flex;
+  flex-flow: column wrap;
+  background-color: white;
+  height: auto; }

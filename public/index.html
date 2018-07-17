@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Rebirth of Reddit</title>
   <link rel='stylesheet' href='/css/style.css'>
-  <h1>FASTENATE</h1>
+  <h1></h1>
 </head>
+
 <body>
-  <div id='toolbar'>
-    <div id='randomBtn'>Random</div>
-    <div id='myBoardBtn'>My Board</div>
-    <div id='getAppBtn'>Get App</div>
-  </div>
-  <div id='pictureBoard'>
-    <div id='firstReddit'>pic1</div>
-    <div id='secondReddit'>pic2</div>
-    <div id='thirdReddit'>pic3</div>
-    <div id='fourthReddit'>pic4</div>
+  <div id='pageContainer'>
+    <div class='toolbar' id=topToolbar>
+      <div class='tools' id='randomSub' dataset-url=''>RANDOM</div>
+      <div class='tools'>&#8226</div>
+      <div class='tools' id='firstStaticSub' data-url='https://www.reddit.com/r/EmpireDidNothingWrong/new'>THE EMPIRE DID NOTHING WRONG</div>
+      <div class='tools'>&#8226</div>
+      <div class='tools' id='secondStaticSub' data-url=https://www.reddit.com/r/todayilearned/new>TODAY I LEARNED</div>
+      <div class='tools'>&#8226</div>
+      <div class='tools' id='thirdStaticSub' data-url='https://www.reddit.com/r/ChildrenFallingOver/new'>CHILDREN FALLING OVER</div>
+      <div class='tools'>&#8226</div>
+      <div class='tools' id='getAppBtn'>GET THE APP</div>
+    </div>
+    <div id='pictureBoard'>
+      <!-- <div class='pictureRow'>
+        <div class='picture' id='firstReddit'>pic1</div>
+        <div class='picture' id='secondReddit'>pic2</div>
+      </div>
+      <div class='pictureRow' id='pictureRow2'>
+          <div class='picture' id='thirdReddit'>pic3</div>
+        </div>
+
+      <div class='picture' id='fourthReddit'>pic4</div> -->
+    </div>
+    <div class='toolbar' id='bottomToolbar'>
+      <img src="/assets/facebook_grey.svg">
+      <img src="/assets/instagram_grey.svg">
+    </div>
   </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script src='/js/app.js'></script>
+
+
 </html>
