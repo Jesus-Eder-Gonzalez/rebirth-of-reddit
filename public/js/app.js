@@ -9,34 +9,74 @@
 let firstStaticSub;
 let secondStaticSub;
 let thirdStaticSub;
-let randomSub;
+let randomSub = document.getElementById('randomSub');
 let imageBoard = document.getElementById('pictureBoard');
+const plus = document.getElementById('plus');
+const instaLogo = document.getElementById('insta');
+const randomSubArray = ['blackmagicfuckery/new',
+  'AnimalsBeingJerks/new',
+  'theydidthemath/new',
+  'mantids/new',
+  'gaming/new',
+  'news/new',
+  'Unexpected/new'];
+
+let setRandom = function (randomButtonElement) {
+  let random = Math.floor((Math.random()*7));
+  redditSubRequest(randomButtonElement.dataset.url + randomSubArray[random]);
+}
+
+plus.addEventListener('pointerenter', () => {
+  plus.style.color = 'white';
+  plus.style.backgroundColor = 'orange';
+});
+plus.addEventListener('pointerleave', () => {
+  plus.style.color = 'orange';
+  plus.style.backgroundColor = 'white';
+});
+instaLogo.addEventListener('pointerenter', () => {
+  instaLogo.src = '/assets/instagram_orange.svg';
+});
+instaLogo.addEventListener('pointerleave', () => {
+  instaLogo.src = '/assets/instagram_grey.svg';
+});
 
 function staticSubInitializer(subVariable, subId) {
   subVariable = document.getElementById(subId);
-  subVariable.addEventListener('pointerenter', () => subVariable.style.color = 'white');
+  subVariable.addEventListener('pointerenter', () => subVariable.style.color = 'orange');
   subVariable.addEventListener('pointerleave', () => subVariable.style.color = 'dimgrey');
-  subVariable.addEventListener('click', () => redditSubRequest.call(redditSubRequest, subVariable.dataset.url));
+  if(subId === 'randomSub'){
+    subVariable.addEventListener('click', () => {
+      let random = Math.floor((Math.random()*7));
+      redditSubRequest(subVariable.dataset.url + randomSubArray[random]);
+    });
+  }else{
+    subVariable.addEventListener('click', () => {
+      redditSubRequest(subVariable.dataset.url);
+    });
+  }
+
   console.log(subVariable);
 }
 
+setRandom(randomSub);
+
+staticSubInitializer(randomSub, 'randomSub');
 staticSubInitializer(firstStaticSub, 'firstStaticSub');
-staticSubInitializer(firstStaticSub, 'secondStaticSub');
-staticSubInitializer(firstStaticSub, 'thirdStaticSub');
-
-
+staticSubInitializer(secondStaticSub, 'secondStaticSub');
+staticSubInitializer(thirdStaticSub, 'thirdStaticSub');
 
 function redditSubRequest(url) {
   let redditGetRequest = new XMLHttpRequest()
   redditGetRequest.addEventListener('load', function () {
     let result = JSON.parse(this.response)['data']['children'];
-    console.log(result[0]['data']);
-    console.log(`The reddit title is ${result[0]['data']['title']}.`);
-    console.log(`The reddit author is /u/${result[0]['data']['author']}.`);
-    console.log(`The reddit post was made ${result[0]['data']['created_utc']} ago.`);
-    console.log(`The reddit post has ${result[0]['data']['ups']} ups.`);
-    console.log(`The reddit post has been clicked: ${result[0]['data']['clicked']}.`);
-    console.log(`Preview: ${result[0]['data']['preview']}`);
+    // console.log(result[0]['data']);
+    // console.log(`The reddit title is ${result[0]['data']['title']}.`);
+    // console.log(`The reddit author is /u/${result[0]['data']['author']}.`);
+    // console.log(`The reddit post was made ${result[0]['data']['created_utc']} ago.`);
+    // console.log(`The reddit post has ${result[0]['data']['ups']} ups.`);
+    // console.log(`The reddit post has been clicked: ${result[0]['data']['clicked']}.`);
+    // console.log(`Preview: ${result[0]['data']['preview']}`);
     redditSubPopulator(result);
   });
 
@@ -68,16 +108,101 @@ function redditSubPopulator(result) {
     let author = result[i]['data']['author'];
     let dateTime = moment.unix(result[i]['data']['created_utc']).fromNow();
     let ups = result[i]['data']['ups'];
-    let previewText = result[i]['data']['preview'];
+    let previewText = '';
     let link = result[i]['data']['permalink'];
-    let images = result[i]['data']['preview'];
-    let isVideo = result[i]['data']['is_video'];
-    let pictureURL = result[i]['data']['thumbnail'];
+    let isSelf = result[i]['data']['is_self'];
 
-    if (images && !isVideo) {
-      pictureURL = result[i]['data']['preview']['images'][0]['source']['url'];
+    // if (isSelf) {
+    //   pictureURL = 'https://placebear.com/g/277/168';
+    //   previewText = result[i]['data']['selftext'];
+    // } else {
+    //   let images = result[i]['data']['preview'];
+    //   let isVideo = result[i]['data']['is_video'];
+    //   // if(!isVideo && images){
+    //   //   console.log(isVideo);
+    //     // pictureURL = result[i].data.preview.images[0].resolutions[0].url;
+    //     // result[i].data.preview.images[0].variants.mp4;
+
+    //   if (images && !isVideo) {
+    //     let hasGif = result[i].data.preview.images[0].variants.gif;
+    //     let hasMP4 = result[i].data.preview.images[0].variants.mp4;
+    //     let hasVideoPreview = result[i].data.preview.reddit_video_preview;
+    //     // console.log((!(!hasGif)) && (!hasMP4) && (!hasVideoPreview));
+    //     // console.log(!(!hasGif) + ' ' + (!hasMP4) + ' ' +(!hasVideoPreview));
+    //     if ((!(!hasGif)) && (!hasMP4) && (!hasVideoPreview)) {
+    //       let length = result[i]['data']['preview']['images'][0]['variants']['gif']['resolutions'].length;
+    //       pictureURL = result[i]['data']['preview']['images'][0]['variants']['gif']['resolutions'][length - 1]['url'];
+    //     } else if((!hasMP4) && (!hasVideoPreview)){
+    //       pictureURL = result[i].data.preview.images[0].source.url;
+    //     } else if((hasMP4 || hasVideoPreview) && !result[i].data.url.includes('gfycat')){
+    //       pictureURL = result[i].data.url;
+    //       // pictureURL = result[i].data.preview.images[0].variants.mp4.source.url;
+    //     }
+    //   }
+    // }
+    let pictureURL = result[i].data.thumbnail;
+    if (isSelf) {
+      pictureURL = 'https://placebear.com/g/277/168';
+      previewText = result[i]['data']['selftext'];
     }
+    // else {
+    //   let images = result[i]['data']['preview'];
+    //   let isVideo = result[i]['data']['is_video'];
+    //   // if(!isVideo && images){
+    //   //   console.log(isVideo);
+    //     // pictureURL = result[i].data.preview.images[0].resolutions[0].url;
+    //     // result[i].data.preview.images[0].variants.mp4;
 
+    //   if (images && !isVideo) {
+    //     let hasGif = result[i].data.preview.images[0].variants.gif;
+    //     let hasMP4 = result[i].data.preview.images[0].variants.mp4;
+    //     let hasVideoPreview = result[i].data.preview.reddit_video_preview;
+    //     // console.log((!(!hasGif)) && (!hasMP4) && (!hasVideoPreview));
+    //     // console.log(!(!hasGif) + ' ' + (!hasMP4) + ' ' +(!hasVideoPreview));
+    //     if ((!(!hasGif)) && (!hasMP4) && (!hasVideoPreview)) {
+    //       let length = result[i]['data']['preview']['images'][0]['variants']['gif']['resolutions'].length;
+    //       pictureURL = result[i]['data']['preview']['images'][0]['variants']['gif']['resolutions'][length - 1]['url'];
+    //     } else if((!hasMP4) && (!hasVideoPreview)){
+    //       pictureURL = result[i].data.preview.images[0].source.url;
+    //     } else if((hasMP4 || hasVideoPreview) && !result[i].data.url.includes('gfycat')){
+    //       pictureURL = result[i].data.url;
+    //       // pictureURL = result[i].data.preview.images[0].variants.mp4.source.url;
+    //     }
+    //   }
+    // }
+
+    console.log(i);
+
+    // if (isSelf) {
+    //   pictureURL = 'https://placebear.com/g/277/168';
+    //   previewText = result[i]['data']['selftext'];
+    // } else {
+    //   let images = result[i]['data']['preview'];
+    //   let isVideo = result[i]['data']['is_video'];
+    //   // if(!isVideo && images){
+    //   //   console.log(isVideo);
+    //     // pictureURL = result[i].data.preview.images[0].resolutions[0].url;
+    //     // result[i].data.preview.images[0].variants.mp4;
+
+    //   if (images && !isVideo) {
+    //     let hasGif = result[i].data.preview.images[0].variants.gif;
+    //     let hasMP4 = result[i].data.preview.images[0].variants.mp4;
+    //     let hasVideoPreview = result[i].data.preview.reddit_video_preview;
+    //     // console.log((!(!hasGif)) && (!hasMP4) && (!hasVideoPreview));
+    //     // console.log(!(!hasGif) + ' ' + (!hasMP4) + ' ' +(!hasVideoPreview));
+    //     if ((!(!hasGif)) && (!hasMP4) && (!hasVideoPreview)) {
+    //       let length = result[i]['data']['preview']['images'][0]['variants']['gif']['resolutions'].length;
+    //       pictureURL = result[i]['data']['preview']['images'][0]['variants']['gif']['resolutions'][length - 1]['url'];
+    //     } else if((!hasMP4) && (!hasVideoPreview)){
+    //       pictureURL = result[i].data.preview.images[0].source.url;
+    //     } else if((hasMP4 || hasVideoPreview) && !result[i].data.url.includes('gfycat')){
+    //       pictureURL = result[i].data.url;
+    //       // pictureURL = result[i].data.preview.images[0].variants.mp4.source.url;
+    //     }
+    //   }
+    // }
+
+    console.log(pictureURL);
 
     mod = i % 2;
     if (mod === 0) {
@@ -87,7 +212,6 @@ function redditSubPopulator(result) {
       firstPost.setAttribute('class', 'picture');
       firstPost.dataset.row = row;
       firstPost.dataset.col = mod;
-      // firstPost.innerText = i;
 
       picture = document.createElement('div');
       picture.style.backgroundImage = `url(${pictureURL})`;
@@ -106,8 +230,11 @@ function redditSubPopulator(result) {
 
       preview = document.createElement('div');
       preview.setAttribute('class', 'text');
-      preview.innerText = previewText;
+      preview.innerHTML = previewText;
       firstPost.appendChild(preview);
+
+      firstPost.addEventListener('pointerenter', () => firstPost.style.color = 'orange');
+      firstPost.addEventListener('pointerleave', () => firstPost.style.color = 'dimgrey');
       // console.log(result[0]['data']);
     } else {
       secondPost = document.createElement('div');
@@ -117,7 +244,7 @@ function redditSubPopulator(result) {
       // secondPost.innerText = i;
 
       picture = document.createElement('div');
-      picture.style.backgroundImage = 'url(/assets/logo.svg)';
+      picture.style.backgroundImage = `url(${pictureURL})`;
       picture.setAttribute('class', 'img');
       secondPost.appendChild(picture);
 
@@ -133,7 +260,7 @@ function redditSubPopulator(result) {
 
       preview = document.createElement('div');
       preview.setAttribute('class', 'text');
-      preview.innerText = previewText;
+      preview.innerHTML = previewText;
       secondPost.appendChild(preview);
 
       currentRow.appendChild(firstPost);
@@ -151,6 +278,3 @@ function redditSubPopulator(result) {
   }
 
 }
-
-//  redditSubRequest('https://www.reddit.com/r/EmpireDidNothingWrong/new/.json', ()=>(console.log('Done.')));
-// 277 * 168 px

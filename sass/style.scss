@@ -12,15 +12,29 @@ $background-pictureBoard: url('/assets/bg.jpg');
 
 h1{
   display: flex;
-  flex-flow: row nowrap;
   background-image: $header-back, $header-front ;
   background-repeat: no-repeat;
-  background-size:50% ,13%;
+  background-size:30% 75%;
   background-position: center; 
+  justify-content: flex-end;
+  align-items: center;
   margin: 0rem;
   margin-bottom: 0.2rem;
-  height:2.5rem;
+  height:65px;
   width:100%;
+}
+
+#plus {
+  background-color: white;
+  color: orange;
+  border: thin solid orange;
+  align-content: center;
+  text-align: center;
+  align-items: center;
+  font-size:37;
+  font-weight: bold;
+  height:30px;
+  width: 30px;
 
 }
 
@@ -33,7 +47,7 @@ h1{
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  height:2.2rem;
+  height:50px;
 
   .tools {
     margin: 5px;
@@ -76,15 +90,19 @@ h1{
       }
 
       .img {
-        background-size:cover;
+        display:flex;
+        background-size:contain;
+        background-position: center;
+        background-repeat:no-repeat;
         height:168px;
+        border: thin dotted black;
       }
 
       .title{
         font-family: $font-titles;
-
         font-weight: bold;
         font-size: 1rem;
+
       }
 
       .text{
